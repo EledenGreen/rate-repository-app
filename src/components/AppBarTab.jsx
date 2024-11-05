@@ -1,15 +1,17 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Link } from 'react-router-native'
 
 const AppBarTab = () => {
   return (
     <View style={styles.bar}>
-      <Link to="/">
-        <Text>Repositories</Text>
-      </Link>
-      <Link to="/signin" style={styles.item}>
-        <Text>SignIn</Text>
-      </Link>
+      <ScrollView horizontal contentContainerStyle={styles.scrollContent}>
+        <Link to="/" style={styles.item}>
+          <Text>Repositories</Text>
+        </Link>
+        <Link to="/signin" style={styles.item}>
+          <Text>SignIn</Text>
+        </Link>
+      </ScrollView>
     </View>
   )
 }
@@ -17,12 +19,15 @@ const AppBarTab = () => {
 const styles = StyleSheet.create({
   bar: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20,
+    padding: 10,
   },
   item: {
     paddingHorizontal: 16,
+    paddingVertical: 10,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: 'space-evenly',
   },
 })
 
