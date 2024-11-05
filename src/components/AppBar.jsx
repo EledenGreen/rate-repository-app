@@ -7,9 +7,6 @@ const styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight,
     height: 56 + Constants.statusBarHeight,
     backgroundColor: '#6200EE',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
   },
   // ...
 })
