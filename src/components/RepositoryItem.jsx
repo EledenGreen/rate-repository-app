@@ -11,13 +11,14 @@ const RepositoryItem = ({ item }) => {
   }
 
   return (
-    <View style={styles.item}>
+    <View style={styles.item} testID="repositoryItem">
       <View style={styles.header}>
         <Image
           style={styles.icon}
           source={{
             uri: item.ownerAvatarUrl,
           }}
+          testID="icon"
         />
         <View style={styles.content}>
           <Text style={styles.fullName}>{item.fullName}</Text>
