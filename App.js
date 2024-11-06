@@ -9,7 +9,7 @@ import createApolloClient from './src/utils/apolloClient'
 const apolloClient = createApolloClient()
 
 const App = () => {
-  console.log(Constants.expoConfig)
+  console.log(Constants.expoConfig.extra)
   return (
     <>
       <StatusBar style="auto" />
