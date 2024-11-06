@@ -1,16 +1,38 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import { Link } from 'react-router-native'
+import { useApolloClient, useQuery } from '@apollo/client'
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Link, useNavigate } from 'react-router-native'
+import { ME } from '../graphql/queries'
+import useAuthStorage from '../hooks/useAuthStorage'
 
 const AppBarTab = () => {
+  const client = useApolloClient()
+  const authStorage = useAuthStorage()
+  const navigate = useNavigate()
+
+  const { data } = useQuery(ME)
+  console.log('me:', data)
+
+  const signout = () => {
+    authStorage.removeAccessToken()
+    client.resetStore()
+    navigate('/signin')
+  }
+
   return (
     <View style={styles.bar}>
       <ScrollView horizontal contentContainerStyle={styles.scrollContent}>
         <Link to="/" style={styles.item}>
           <Text>Repositories</Text>
         </Link>
-        <Link to="/signin" style={styles.item}>
-          <Text>SignIn</Text>
-        </Link>
+        {data && data.me ? (
+          <Pressable onPress={signout} style={styles.item}>
+            <Text>Sign out</Text>
+          </Pressable>
+        ) : (
+          <Link to="/signin" style={styles.item}>
+            <Text>SignIn</Text>
+          </Link>
+        )}
       </ScrollView>
     </View>
   )
