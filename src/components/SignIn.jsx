@@ -62,6 +62,7 @@ export const SignInContainer = ({ onSubmit }) => {
   )
 }
 
+// refactored as a pure-component for testing purpose
 const SignIn = () => {
   const [signIn] = useSignIn()
   const navigate = useNavigate()
