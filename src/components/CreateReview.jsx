@@ -1,12 +1,16 @@
 import * as yup from 'yup'
 import { useFormik } from 'formik'
-import { StyleSheet, TextInput, View } from 'react-native'
+import { Button, StyleSheet, TextInput, View } from 'react-native'
 import theme from '../theme'
+import { useMutation } from '@apollo/client'
+import { CREATE_REVIEW } from '../graphql/mutations'
+import { ALL_REPOSITORIES } from '../graphql/queries'
+import { useNavigate } from 'react-router-native'
 
 const initialValues = {
   repositoryName: '',
   ownerName: '',
-  rating: 0,
+  rating: '',
   text: '',
 }
 
@@ -21,10 +25,34 @@ const validationSchema = yup.object().shape({
   text: yup.string().max(2000).trim(),
 })
 
+// createReview is only rendered when a user is signed in. checked at AppBarTab.jsx
 const CreateReview = () => {
+  // define onSubmit before formik
+  const onSubmit = async (values) => {
+    const { repositoryName, ownerName, rating, text } = values
+
+    try {
+      createReview({
+        variables: {
+          repositoryName,
+          ownerName,
+          rating,
+          text,
+        },
+      })
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   const formik = useFormik({
     initialValues,
     validationSchema,
+    onSubmit,
+  })
+
+  const [createReview, result] = useMutation(CREATE_REVIEW, {
+    refetchQueries: [{ query: ALL_REPOSITORIES }],
   })
 
   return (
@@ -66,8 +94,15 @@ const CreateReview = () => {
               : null,
           ]}
           placeholder="rating"
-          value={formik.values.rating}
-          onChangeText={formik.handleChange('rating')}
+          value={formik.values.rating ? String(formik.values.rating) : ''}
+          onChangeText={(value) => {
+            const intValue = parseInt(value, 10)
+            if (!isNaN(intValue)) {
+              formik.setFieldValue('rating', intValue)
+            } else {
+              formik.setFieldValue('rating', '')
+            }
+          }}
         />
         {formik.touched.rating && formik.errors.rating && (
           <Text style={styles.error}>{formik.errors.rating}</Text>
@@ -86,6 +121,7 @@ const CreateReview = () => {
         {formik.touched.text && formik.errors.text && (
           <Text style={styles.error}>{formik.errors.text}</Text>
         )}
+        <Button title="Submit" onPress={formik.handleSubmit}></Button>
       </View>
     </>
   )

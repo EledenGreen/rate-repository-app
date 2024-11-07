@@ -23,15 +23,6 @@ export const CREATE_REVIEW = gql`
       }
     ) {
       repositoryId
-      repository {
-        reviews {
-          edges {
-            node {
-              text
-            }
-          }
-        }
-      }
     }
   }
 `
