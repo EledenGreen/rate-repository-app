@@ -1,8 +1,12 @@
 import React from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Button, Image, StyleSheet, Text, View } from 'react-native'
 import theme from '../theme'
+import { useParams } from 'react-router-native'
+import * as Linking from 'expo-linking'
 
 const RepositoryItem = ({ item }) => {
+  const { id } = useParams()
+
   const formatCount = (count) => {
     if (count >= 1000) {
       return `${(count / 1000).toFixed(1)}k`
@@ -49,6 +53,12 @@ const RepositoryItem = ({ item }) => {
           <Text style={styles.statLabel}>Rating</Text>
         </View>
       </View>
+      {id && (
+        <Button
+          title="Open on Github"
+          onPress={() => Linking.openURL(item.url)}
+        />
+      )}
     </View>
   )
 }
@@ -96,6 +106,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginTop: 10,
+    marginBottom: 10,
   },
   statItem: {
     alignItems: 'center',

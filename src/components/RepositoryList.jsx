@@ -1,4 +1,6 @@
-import { FlatList, View, StyleSheet, Text } from 'react-native'
+import { FlatList, View, StyleSheet, Text, Pressable } from 'react-native'
+import { useNavigate } from 'react-router-native'
+
 import RepositoryItem from './RepositoryItem'
 import useRepositories from '../hooks/useRepositories'
 
@@ -13,7 +15,11 @@ const styles = StyleSheet.create({
 
 const ItemSeparator = () => <View style={styles.separator} />
 
-export const RepositoryListContainer = ({ repositories, loading }) => {
+export const RepositoryListContainer = ({
+  repositories,
+  loading,
+  navigate,
+}) => {
   if (loading) {
     return <Text>loading...</Text>
   }
@@ -27,7 +33,11 @@ export const RepositoryListContainer = ({ repositories, loading }) => {
       <FlatList
         data={repositoryNodes}
         ItemSeparatorComponent={ItemSeparator}
-        renderItem={({ item }) => <RepositoryItem item={item} />}
+        renderItem={({ item }) => (
+          <Pressable onPress={() => navigate(`/${item.id}`)}>
+            <RepositoryItem item={item} />
+          </Pressable>
+        )}
       />
     </View>
   )
@@ -35,9 +45,14 @@ export const RepositoryListContainer = ({ repositories, loading }) => {
 
 const RepositoryList = () => {
   const { repositories, loading } = useRepositories()
+  const navigate = useNavigate()
 
   return (
-    <RepositoryListContainer repositories={repositories} loading={loading} />
+    <RepositoryListContainer
+      repositories={repositories}
+      loading={loading}
+      navigate={navigate}
+    />
   )
 }
 
