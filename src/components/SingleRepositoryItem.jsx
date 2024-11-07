@@ -4,6 +4,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native'
 import { useQuery } from '@apollo/client'
 import { REPOSITORY, REVIEW } from '../graphql/queries'
 import ReviewItem from './ReviewItem'
+import CreateReview from './CreateReview'
 
 const ItemSeparator = () => <View style={styles.separator} />
 
@@ -26,6 +27,7 @@ const SingleRepositoryItem = () => {
         keyExtractor={({ id }) => id}
         ListHeaderComponent={() => <RepositoryItem item={data.repository} />}
       />
+      <CreateReview />
     </>
   )
 }

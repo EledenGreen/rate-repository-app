@@ -25,9 +25,14 @@ const AppBarTab = () => {
           <Text>Repositories</Text>
         </Link>
         {data && data.me ? (
-          <Pressable onPress={signout} style={styles.item}>
-            <Text>Sign out</Text>
-          </Pressable>
+          <>
+            <Pressable onPress={signout} style={styles.item}>
+              <Text>Sign out</Text>
+            </Pressable>
+            <Pressable style={styles.item}>
+              <Text>Create a review</Text>
+            </Pressable>
+          </>
         ) : (
           <Link to="/signin" style={styles.item}>
             <Text>SignIn</Text>
