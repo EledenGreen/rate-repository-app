@@ -1,6 +1,6 @@
 import * as yup from 'yup'
 import { useFormik } from 'formik'
-import { Button, StyleSheet, TextInput, View } from 'react-native'
+import { Button, StyleSheet, Text, TextInput, View } from 'react-native'
 import theme from '../theme'
 import { useMutation } from '@apollo/client'
 import { CREATE_REVIEW } from '../graphql/mutations'
@@ -27,12 +27,17 @@ const validationSchema = yup.object().shape({
 
 // createReview is only rendered when a user is signed in. checked at AppBarTab.jsx
 const CreateReview = () => {
+  const [createReview] = useMutation(CREATE_REVIEW, {
+    refetchQueries: [{ query: ALL_REPOSITORIES }],
+  })
+  const navigate = useNavigate()
+
   // define onSubmit before formik
   const onSubmit = async (values) => {
     const { repositoryName, ownerName, rating, text } = values
 
     try {
-      createReview({
+      const { data } = await createReview({
         variables: {
           repositoryName,
           ownerName,
@@ -40,6 +45,9 @@ const CreateReview = () => {
           text,
         },
       })
+      const id = data.createReview.repositoryId
+      console.log('navigateID: ', id)
+      navigate(`/${id}`)
     } catch (e) {
       console.log(e)
     }
@@ -49,10 +57,6 @@ const CreateReview = () => {
     initialValues,
     validationSchema,
     onSubmit,
-  })
-
-  const [createReview, result] = useMutation(CREATE_REVIEW, {
-    refetchQueries: [{ query: ALL_REPOSITORIES }],
   })
 
   return (
@@ -93,7 +97,7 @@ const CreateReview = () => {
               ? styles.inputError
               : null,
           ]}
-          placeholder="rating"
+          placeholder="rating: 0 - 100"
           value={formik.values.rating ? String(formik.values.rating) : ''}
           onChangeText={(value) => {
             const intValue = parseInt(value, 10)

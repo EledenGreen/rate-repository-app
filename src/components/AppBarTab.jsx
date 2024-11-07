@@ -29,7 +29,10 @@ const AppBarTab = () => {
             <Pressable onPress={signout} style={styles.item}>
               <Text>Sign out</Text>
             </Pressable>
-            <Pressable style={styles.item}>
+            <Pressable
+              onPress={() => navigate('/createreview')}
+              style={styles.item}
+            >
               <Text>Create a review</Text>
             </Pressable>
           </>

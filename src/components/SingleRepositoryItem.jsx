@@ -13,6 +13,7 @@ const SingleRepositoryItem = () => {
 
   const { data, loading } = useQuery(REPOSITORY, {
     variables: { id },
+    fetchPolicy: 'cache-and-network',
   })
 
   if (loading) {
@@ -27,7 +28,6 @@ const SingleRepositoryItem = () => {
         keyExtractor={({ id }) => id}
         ListHeaderComponent={() => <RepositoryItem item={data.repository} />}
       />
-      <CreateReview />
     </>
   )
 }
