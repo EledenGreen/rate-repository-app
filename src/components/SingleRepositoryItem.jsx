@@ -25,7 +25,7 @@ const SingleRepositoryItem = () => {
         data={data.repository.reviews.edges}
         ItemSeparatorComponent={ItemSeparator}
         renderItem={({ item }) => <ReviewItem review={item.node} />}
-        keyExtractor={({ id }) => id}
+        keyExtractor={({ node }) => node.id}
         ListHeaderComponent={() => <RepositoryItem item={data.repository} />}
       />
     </>

@@ -118,7 +118,7 @@ const CreateReview = () => {
               ? styles.inputError
               : null,
           ]}
-          placeholder="text"
+          placeholder="review"
           value={formik.values.text}
           onChangeText={formik.handleChange('text')}
         />
