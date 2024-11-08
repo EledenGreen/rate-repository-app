@@ -5,6 +5,7 @@ import RepositoryItem from './RepositoryItem'
 import useRepositories from '../hooks/useRepositories'
 import OrderPicker from './OrderPicker'
 import { useState } from 'react'
+import SearchBar from './SearchBar'
 
 const styles = StyleSheet.create({
   separator: {
@@ -22,6 +23,8 @@ export const RepositoryListContainer = ({
   loading,
   navigate,
   setOrder,
+  keyword,
+  setKeyword,
 }) => {
   if (loading) {
     return <Text>loading...</Text>
@@ -41,7 +44,12 @@ export const RepositoryListContainer = ({
             <RepositoryItem item={item} />
           </Pressable>
         )}
-        ListHeaderComponent={<OrderPicker setOrder={setOrder} />}
+        ListHeaderComponent={
+          <>
+            <SearchBar keyword={keyword} setKeyword={setKeyword} />
+            <OrderPicker setOrder={setOrder} />
+          </>
+        }
       />
     </View>
   )
@@ -52,8 +60,9 @@ const RepositoryList = () => {
     orderBy: 'CREATED_AT',
     orderDirection: 'DESC',
   })
+  const [keyword, setKeyword] = useState('')
 
-  const { repositories, loading } = useRepositories(order)
+  const { repositories, loading } = useRepositories(order, keyword)
   const navigate = useNavigate()
 
   return (
@@ -62,6 +71,8 @@ const RepositoryList = () => {
       loading={loading}
       navigate={navigate}
       setOrder={setOrder}
+      setKeyword={setKeyword}
+      keyword={keyword}
     />
   )
 }

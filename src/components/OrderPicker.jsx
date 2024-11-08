@@ -27,7 +27,6 @@ const OrderPicker = ({ setOrder }) => {
     <View
       style={{
         flexDirection: 'row',
-        justifyContent: 'center',
       }}
     >
       <Menu
@@ -65,9 +64,10 @@ const styles = StyleSheet.create({
   },
   anchor: {
     width: '100%',
-    padding: 12,
+    padding: 5,
     backgroundColor: '#f0f0f0',
     borderRadius: 4,
+    margin: 5,
   },
   anchorText: {
     fontSize: 16,
