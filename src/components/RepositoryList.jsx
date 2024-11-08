@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-native'
 
 import RepositoryItem from './RepositoryItem'
 import useRepositories from '../hooks/useRepositories'
+import OrderPicker from './OrderPicker'
+import { useState } from 'react'
 
 const styles = StyleSheet.create({
   separator: {
@@ -19,6 +21,7 @@ export const RepositoryListContainer = ({
   repositories,
   loading,
   navigate,
+  setOrder,
 }) => {
   if (loading) {
     return <Text>loading...</Text>
@@ -38,13 +41,19 @@ export const RepositoryListContainer = ({
             <RepositoryItem item={item} />
           </Pressable>
         )}
+        ListHeaderComponent={<OrderPicker setOrder={setOrder} />}
       />
     </View>
   )
 }
 
 const RepositoryList = () => {
-  const { repositories, loading } = useRepositories()
+  const [order, setOrder] = useState({
+    orderBy: 'CREATED_AT',
+    orderDirection: 'DESC',
+  })
+
+  const { repositories, loading } = useRepositories(order)
   const navigate = useNavigate()
 
   return (
@@ -52,6 +61,7 @@ const RepositoryList = () => {
       repositories={repositories}
       loading={loading}
       navigate={navigate}
+      setOrder={setOrder}
     />
   )
 }
