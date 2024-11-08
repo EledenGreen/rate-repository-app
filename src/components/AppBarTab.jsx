@@ -28,14 +28,17 @@ const AppBarTab = () => {
         </Link>
         {data && data.me ? (
           <>
-            <Pressable onPress={signout} style={styles.item}>
-              <Text>Sign out</Text>
-            </Pressable>
             <Pressable
               onPress={() => navigate('/createreview')}
               style={styles.item}
             >
               <Text>Create a review</Text>
+            </Pressable>
+            <Pressable onPress={() => navigate('/reviews')} style={styles.item}>
+              <Text>My reviews</Text>
+            </Pressable>
+            <Pressable onPress={signout} style={styles.item}>
+              <Text>Sign out</Text>
             </Pressable>
           </>
         ) : (

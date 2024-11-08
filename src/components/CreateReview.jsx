@@ -6,7 +6,6 @@ import { useMutation } from '@apollo/client'
 import { CREATE_REVIEW } from '../graphql/mutations'
 import { ALL_REPOSITORIES } from '../graphql/queries'
 import { useNavigate } from 'react-router-native'
-import MyReview from './MyReview/MyReview'
 
 const initialValues = {
   repositoryName: '',
@@ -128,7 +127,6 @@ const CreateReview = () => {
         )}
         <Button title="Submit" onPress={formik.handleSubmit}></Button>
       </View>
-      <MyReview />
     </>
   )
 }
