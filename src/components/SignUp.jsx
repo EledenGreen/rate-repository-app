@@ -1,11 +1,12 @@
 import * as yup from 'yup'
 import { useFormik } from 'formik'
-import { useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { CREATE_USER } from '../graphql/mutations'
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native'
 import theme from '../theme'
 import { ME } from '../graphql/queries'
 import { useNavigate } from 'react-router-native'
+import useSignIn from '../hooks/useSignIn'
 
 const initialValues = {
   username: '',
@@ -30,9 +31,9 @@ const validationSchema = yup.object().shape({
 
 const SignUp = () => {
   const navigate = useNavigate()
-  const [createUser] = useMutation(CREATE_USER, {
-    refetchQueries: [{ query: ME }],
-  })
+
+  const [createUser] = useMutation(CREATE_USER)
+  const [signIn] = useSignIn()
 
   const onSubmit = async (values) => {
     const { username, password } = values
@@ -45,6 +46,8 @@ const SignUp = () => {
         },
       })
       console.log('user created: ', data.createUser.username)
+      const { data: dataSignIn } = await signIn({ username, password })
+      console.log(dataSignIn.authenticate.accessToken)
       navigate('/')
     } catch (e) {
       console.log(e)

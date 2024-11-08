@@ -9,7 +9,9 @@ const AppBarTab = () => {
   const authStorage = useAuthStorage()
   const navigate = useNavigate()
 
-  const { data } = useQuery(ME)
+  const { data } = useQuery(ME, {
+    fetchPolicy: 'cache-and-network',
+  })
   console.log('me:', data)
 
   const signout = () => {
