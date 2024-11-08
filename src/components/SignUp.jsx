@@ -2,7 +2,7 @@ import * as yup from 'yup'
 import { useFormik } from 'formik'
 import { useMutation } from '@apollo/client'
 import { CREATE_USER } from '../graphql/mutations'
-import { StyleSheet, Text, TextInput, View } from 'react-native'
+import { Button, StyleSheet, Text, TextInput, View } from 'react-native'
 import theme from '../theme'
 import { ME } from '../graphql/queries'
 import { useNavigate } from 'react-router-native'
@@ -84,9 +84,25 @@ const SignUp = () => {
           placeholder="password"
           value={formik.values.password}
           onChangeText={formik.handleChange('password')}
+          secureTextEntry
         />
         {formik.errors.password && formik.touched.password && (
           <Text style={styles.error}>{formik.errors.password}</Text>
+        )}
+        <TextInput
+          style={[
+            styles.input,
+            formik.errors.confirmPassword && formik.touched.confirmPassword
+              ? styles.inputError
+              : null,
+          ]}
+          placeholder="confirm password"
+          value={formik.values.confirmPassword}
+          onChangeText={formik.handleChange('confirmPassword')}
+          secureTextEntry
+        />
+        {formik.errors.confirmPassword && formik.touched.confirmPassword && (
+          <Text style={styles.error}>{formik.errors.confirmPassword}</Text>
         )}
         <Button title="Submit" onPress={formik.handleSubmit}></Button>
       </View>
