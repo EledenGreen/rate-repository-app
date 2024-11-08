@@ -22,9 +22,21 @@ export const ALL_REPOSITORIES = gql`
   }
 `
 export const ME = gql`
-  query {
+  query ($includeReviews: Boolean = false) {
     me {
       username
+      reviews @include(if: $includeReviews) {
+        edges {
+          node {
+            rating
+            createdAt
+            repository {
+              fullName
+            }
+            text
+          }
+        }
+      }
     }
   }
 `
