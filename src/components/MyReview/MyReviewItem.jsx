@@ -1,14 +1,44 @@
+import { useMutation } from '@apollo/client'
 import theme from '../../theme'
 import format from 'date-fns/format'
-import { StyleSheet, Text, View } from 'react-native'
+import { Alert, StyleSheet, Text, View } from 'react-native'
 import { Button } from 'react-native-paper'
 import { useNavigate } from 'react-router-native'
+import { DELETE_REVIEW } from '../../graphql/mutations'
+import { ME } from '../../graphql/queries'
 
 const MyReviewItem = ({ review }) => {
+  const includeReviews = true
+  const [deleteReview] = useMutation(DELETE_REVIEW, {
+    refetchQueries: [
+      {
+        query: ME,
+        variables: { includeReviews },
+      },
+    ],
+  })
+
+  const handleDelete = () => {
+    const deleteReviewId = review.id
+    return Alert.alert('Delete review', 'Are you sure?', [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      {
+        text: 'Yes',
+        onPress: () =>
+          deleteReview({
+            variables: { deleteReviewId },
+          }),
+      },
+    ])
+  }
+
   const navigate = useNavigate()
   return (
     <>
-      <View style={styles.constainer}>
+      <View style={styles.container}>
         <View style={styles.item}>
           <View style={styles.rating}>
             <Text style={styles.ratingText}>{review.rating}</Text>
@@ -21,19 +51,24 @@ const MyReviewItem = ({ review }) => {
             <Text style={styles.text}>{review.text}</Text>
           </View>
         </View>
-        <Button
-          mode="contained"
-          onPress={() => navigate(`/${review.repositoryId}`)}
-        >
-          View Repository
-        </Button>
+        <View style={styles.button}>
+          <Button
+            mode="contained"
+            onPress={() => navigate(`/${review.repositoryId}`)}
+          >
+            View Repository
+          </Button>
+          <Button mode="contained" onPress={handleDelete}>
+            Delete review
+          </Button>
+        </View>
       </View>
     </>
   )
 }
 
 const styles = StyleSheet.create({
-  constainer: {
+  container: {
     padding: 15,
     backgroundColor: 'white',
   },
@@ -72,6 +107,11 @@ const styles = StyleSheet.create({
   text: {
     color: theme.colors.textPrimary,
     marginBottom: 5,
+  },
+  button: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    marginTop: 5,
   },
 })
 
