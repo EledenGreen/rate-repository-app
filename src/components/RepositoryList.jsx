@@ -25,6 +25,7 @@ export const RepositoryListContainer = ({
   setOrder,
   keyword,
   setKeyword,
+  onEndReach,
 }) => {
   if (loading) {
     return <Text>loading...</Text>
@@ -33,6 +34,8 @@ export const RepositoryListContainer = ({
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
     : []
+
+  console.log(Object.keys(repositoryNodes).length)
 
   return (
     <View style={styles.container}>
@@ -50,6 +53,7 @@ export const RepositoryListContainer = ({
             <OrderPicker setOrder={setOrder} />
           </>
         }
+        onEndReached={onEndReach}
       />
     </View>
   )
@@ -62,7 +66,17 @@ const RepositoryList = () => {
   })
   const [keyword, setKeyword] = useState('')
 
-  const { repositories, loading } = useRepositories(order, keyword)
+  const { repositories, loading, fetchMore } = useRepositories({
+    order,
+    keyword,
+    first: 4,
+  })
+
+  const onEndReach = () => {
+    fetchMore()
+    console.log('fetched')
+  }
+
   const navigate = useNavigate()
 
   return (
@@ -73,6 +87,7 @@ const RepositoryList = () => {
       setOrder={setOrder}
       setKeyword={setKeyword}
       keyword={keyword}
+      onEndReach={onEndReach}
     />
   )
 }
