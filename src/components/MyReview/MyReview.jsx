@@ -11,11 +11,11 @@ const MyReview = () => {
     fetchPolicy: 'cache-and-network',
   })
 
-  const reviewNodes = data.me.reviews.edges.map((edge) => edge.node)
+  const reviewNodes = data ? data.me.reviews.edges.map((edge) => edge.node) : []
 
   return (
     <>
-      <View>
+      <View style={styles.container}>
         <FlatList
           data={reviewNodes}
           ItemSeparatorComponent={ItemSeparator}

@@ -34,6 +34,7 @@ export const ME = gql`
               fullName
             }
             text
+            repositoryId
           }
         }
       }
