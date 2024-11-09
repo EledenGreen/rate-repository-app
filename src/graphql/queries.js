@@ -54,10 +54,10 @@ export const ME = gql`
 `
 export const REPOSITORY = gql`
   ${REPOSITORY_DETAILS}
-  query ($id: ID!) {
+  query ($id: ID!, $first: Int, $after: String) {
     repository(id: $id) {
       ...RepositoryDetails
-      reviews {
+      reviews(first: $first, after: $after) {
         edges {
           node {
             id
@@ -69,6 +69,12 @@ export const REPOSITORY = gql`
               username
             }
           }
+          cursor
+        }
+        pageInfo {
+          startCursor
+          endCursor
+          hasNextPage
         }
       }
     }
